@@ -49,7 +49,7 @@ var images = [
   "./assets/012-muted.png",
   "./assets/013-meh.png",
   "./assets/014-laugh.png",
-  "./assets/015-ill.png",
+  "./assets/015-illAAA.png",
   "./assets/016-happy-2.png",
   "./assets/017-happy-1.png",
   "./assets/018-cute.png",
@@ -59,7 +59,7 @@ var images = [
   "./assets/022-bored.png",
   "./assets/023-blush.png",
   "./assets/024-sad.png",
-  "./assets/025-happyAA.png"
+  "./assets/025-happyAAA.png"
 ];
 
 /// WRITE CODE UNDER HERE
@@ -73,6 +73,9 @@ images.forEach(function(url) {
       container.appendChild(img);
     })
     .catch(function(err) {
+      var divError = document.createElement("div");
+      divError.className = "error";
+      container.appendChild(divError);
       console.error(err);
     })
 
