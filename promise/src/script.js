@@ -32,7 +32,7 @@ function loadImage(url) {
  */
 function animate(element, duration, x, y) {
   return new Promise(function(resolve) {
-    TweenLite.to(element, duration, { x: x, y: y, onComplete: resolve });
+    TweenLite.to(element, duration, {opacity: 1, x: x, y: y, onComplete: resolve });
   });
 }
 
@@ -69,60 +69,99 @@ var imagesUrls = [
 var imagesContainer = document.querySelector(".imagesContainer");
 var errorsContainer = document.querySelector(".errorsContainer");
 
-var promiseArray = [];
+function displayimages(images){
+    var targetimage = imagesUrls.shift() // process doggies images one at a time
+    if (targetimage){ // if not end of array
+        loadImage(targetimage)
+          .then(function(url){ // load image then...
+            imagesContainer.appendChild(url) // add image to DIV
+            displayimages(images) // recursion- call displayimages() again to process next image/doggy
+          })
+          .catch(function(e){ // handle an image not loading
+              console.log('Error loading ', e)
+              var divError = document.createElement("div"); 
+              divError.className = "error"; 
+              errorsContainer.appendChild(divError);
+              displayimages(images) // recursion- call displayimages() again to process next image/doggy
+          })
+    }
+}
+
+displayimages(imagesUrls)
+
+/*
 
 imagesUrls.forEach(function(url){
-  promiseArray.push(loadImage(url)
-    // .catch(function(err) { 
-    //   var divError = document.createElement("div"); 
-    //   divError.className = "error"; 
-    //   errorsContainer.appendChild(divError);
-    //   var css = "padding: 10px; background: #222; color: #bada55";
-    //   var string = err.path["0"].currentSrc;
-    //   console.log('%c WRONG URL: ' + string, css);
-    // })
-  );
-});
-
-var promises = Promise.all(promiseArray);
-
-promises
-  .then(function(images){
-
-    console.log("promiseArray: ", promiseArray);
-
-    images.forEach(function(actualImage){
-      imagesContainer.appendChild(actualImage);
+ 
+  loadImage(url)
+    .then(function(imgDomElement){
+      console.log("imgDomElement", imgDomElement);
+      // successArray.push(imgDomElement);
+      imagesContainer.appendChild(imgDomElement);
+    })
+    .catch(function(errorEvent){
+      var divError = document.createElement("div"); 
+      divError.className = "error"; 
+      errorsContainer.appendChild(divError);
     })
 
-    var currentIndex = 0;
+});
 
-    function loopAnimation() {
-      var currentImage = images[currentIndex];
-      animate(currentImage, .1, '650px', '0px')
-        .then(() => {
-          return animate(currentImage, .1, '650px', '750px');
-        })
-        .then(() => {
-          return animate(currentImage, .1, '0px', '750px');
-        })
-        .then(() => {
-          return animate(currentImage, .1, '0px', '0px');
-        })
-        .then(() => {
-          currentIndex++;
 
-          if (currentIndex === images.length) {
-            console.log('finished')
-          } else {
-            loopAnimation();
-          }
-        })
-        .catch(err => {
-          console.error(err);
-        });
+var promises = Promise.all(successArray);
+
+var realNumberImagesLoaded = imagesUrls.length - errorArray.length;
+console.log("imagesUrls.length", imagesUrls.length);
+console.log("successArray.length", successArray.length);
+console.log("errorArray.length", errorArray.length);
+console.log("realNumberImagesLoaded", realNumberImagesLoaded);
+
+promises
+  .then(
+      function(images){
+
+      console.log("successArray: ", successArray);
+      console.log("errorArray: ", errorArray);
+
+      images.forEach(function(actualImage){
+        imagesContainer.appendChild(actualImage);
+        TweenMax.set(actualImage, {opacity: 0});
+      })
+
+      var index = 0;
+      var animDuration = .25;
+
+      function loopAnimation() {
+        var currentImage = images[index];
+        animate(currentImage, animDuration, '650px', '0px')
+          .then(function(){
+            return animate(currentImage, animDuration, '650px', '750px');
+          })
+          .then(function(){
+            return animate(currentImage, animDuration, '0px', '750px');
+          })
+          .then(function(){
+            return animate(currentImage, animDuration, '0px', '0px');
+          })
+          .then(function(){
+            TweenMax.set(currentImage, {opacity: 0});
+            index++;
+
+
+            if (index === realNumberImagesLoaded) {
+              console.log('finished')
+            } else {
+              loopAnimation();
+            }
+          })
+          .catch(err => {
+            console.warn(err);
+          });
+      }
+      
+      loopAnimation();
+      
     }
-    
-    loopAnimation();
-    
-  })
+  )
+
+  */
