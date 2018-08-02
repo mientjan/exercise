@@ -1,0 +1,19 @@
+{
+	"dependencies": {
+		"gulp": "*",
+		"gulp-sass": "*",
+		"browser-sync": "*",
+		"grunt": "*",
+		"grunt-cli": "*"
+	},
+	"version": "1.0.0",
+	"license": "ISC",
+	"repository": {
+		"url": "",
+		"type": "git"
+	},
+	"description": "Exercise automation",
+	"main": "",
+	"name": "automation",
+	"author": "Lucio"
+}
