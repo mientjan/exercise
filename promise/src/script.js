@@ -6,7 +6,9 @@
 function loadImage(url) {
   return new Promise(function(resolve, reject) {
     var img = document.createElement("img");
+    img.className = "face";
     img.onload = function() {
+      console.log(img);
       resolve(this);
     };
 
@@ -57,7 +59,23 @@ var images = [
   "./assets/022-bored.png",
   "./assets/023-blush.png",
   "./assets/024-sad.png",
-  "./assets/025-happy.png"
+  "./assets/025-happyAA.png"
 ];
 
 /// WRITE CODE UNDER HERE
+
+var container = document.querySelector(".container");
+console.log(container);
+
+images.forEach(function(url) {
+  loadImage(url)
+    .then(function(img) {
+      container.appendChild(img);
+    })
+    .catch(function(err) {
+      console.error(err);
+    })
+
+    //.then(img => container.appendChild(img))
+    //.catch(error => console.error(error));
+});
