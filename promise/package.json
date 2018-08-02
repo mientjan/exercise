@@ -4,6 +4,7 @@
 		"gulp-sass": "*",
 		"browser-sync": "*",
 		"grunt": "*",
+		"colors": "*",
 		"grunt-cli": "*"
 	},
 	"version": "1.0.0",

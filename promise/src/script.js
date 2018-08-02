@@ -5,10 +5,11 @@
  */
 function loadImage(url) {
   return new Promise(function(resolve, reject) {
+
     var img = document.createElement("img");
     img.className = "face";
+
     img.onload = function() {
-      console.log(img);
       resolve(this);
     };
 
@@ -17,6 +18,7 @@ function loadImage(url) {
     };
 
     img.src = url;
+
   });
 }
 
@@ -34,7 +36,7 @@ function animate(element, duration, x, y) {
   });
 }
 
-var images = [
+var imagesUrls = [
   "./assets/001-yawn.png",
   "./assets/002-wink.png",
   "./assets/003-smile-1.png",
@@ -49,7 +51,7 @@ var images = [
   "./assets/012-muted.png",
   "./assets/013-meh.png",
   "./assets/014-laugh.png",
-  "./assets/015-illAAA.png",
+  "./assets/015-ill.png",
   "./assets/016-happy-2.png",
   "./assets/017-happy-1.png",
   "./assets/018-cute.png",
@@ -59,26 +61,68 @@ var images = [
   "./assets/022-bored.png",
   "./assets/023-blush.png",
   "./assets/024-sad.png",
-  "./assets/025-happyAAA.png"
+  "./assets/025-happy.png"
 ];
 
 /// WRITE CODE UNDER HERE
 
-var container = document.querySelector(".container");
-console.log(container);
+var imagesContainer = document.querySelector(".imagesContainer");
+var errorsContainer = document.querySelector(".errorsContainer");
 
-images.forEach(function(url) {
-  loadImage(url)
-    .then(function(img) {
-      container.appendChild(img);
-    })
-    .catch(function(err) {
-      var divError = document.createElement("div");
-      divError.className = "error";
-      container.appendChild(divError);
-      console.error(err);
-    })
+var promiseArray = [];
 
-    //.then(img => container.appendChild(img))
-    //.catch(error => console.error(error));
+imagesUrls.forEach(function(url){
+  promiseArray.push(loadImage(url)
+    // .catch(function(err) { 
+    //   var divError = document.createElement("div"); 
+    //   divError.className = "error"; 
+    //   errorsContainer.appendChild(divError);
+    //   var css = "padding: 10px; background: #222; color: #bada55";
+    //   var string = err.path["0"].currentSrc;
+    //   console.log('%c WRONG URL: ' + string, css);
+    // })
+  );
 });
+
+var promises = Promise.all(promiseArray);
+
+promises
+  .then(function(images){
+
+    console.log("promiseArray: ", promiseArray);
+
+    images.forEach(function(actualImage){
+      imagesContainer.appendChild(actualImage);
+    })
+
+    var currentIndex = 0;
+
+    function loopAnimation() {
+      var currentImage = images[currentIndex];
+      animate(currentImage, .1, '650px', '0px')
+        .then(() => {
+          return animate(currentImage, .1, '650px', '750px');
+        })
+        .then(() => {
+          return animate(currentImage, .1, '0px', '750px');
+        })
+        .then(() => {
+          return animate(currentImage, .1, '0px', '0px');
+        })
+        .then(() => {
+          currentIndex++;
+
+          if (currentIndex === images.length) {
+            console.log('finished')
+          } else {
+            loopAnimation();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+    
+    loopAnimation();
+    
+  })

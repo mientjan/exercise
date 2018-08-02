@@ -1,12 +1,12 @@
-$width: 800px;
+$width: 1000px;
 $height: 800px;
 
-.container{
+
+.wrapper{
   position: relative;
   box-sizing: content-box;
   width: $width;
   height: $height;
-  border: solid 1px #000;
   overflow: hidden;
   background-color: #FFF;
   top: 50%;
@@ -14,14 +14,39 @@ $height: 800px;
   transform: translate(-50%,-50%);
 }
 
-.face{
+.imagesContainer{
   position: relative;
+  box-sizing: border-box;
+  width: $width * 70 / 100 ;
+  height: $height;
+  border: solid 1px #000;
+  overflow: hidden;
+  background-color: #FFF;
+  float: left;
+}
+
+.errorsContainer{
+  position: relative;
+  box-sizing: border-box;
+  width: $width * 20 / 100;
+  height: $height;
+  border: solid 1px #000;
+  overflow: hidden;
+  background-color: #FFF;
+  float: right;
+}
+
+.face{
+  position: absolute;
   width: 50px;
   height: 50px;
 }
 
 .error{
   position: relative;
+  float: right;
+  bottom: 0;
+  right: 0;
   width: 50px;
   height: 50px;
   background: red;
