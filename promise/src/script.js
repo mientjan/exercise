@@ -38,15 +38,15 @@ var imagesUrls = [
     "./assets/003-smile-1.png",
     "./assets/004-smile.png",
     "./assets/005-surprise.png",
-    "./assets/006-shocked.png",
-    "./assets/007-sceptic.png",
-    "./assets/008-sad-2.png",
-    "./assets/009-sad-1.png",
-    "./assets/010-happy-3.png",
-    "./assets/011-pain.png",
-    "./assets/012-muted.png",
-    "./assets/013-meh.png",
-    "./assets/014-laugh.png",
+    "./assets/006-shockeda.png",
+    "./assets/007-sceptica.png",
+    "./assets/008-sad-2a.png",
+    "./assets/009-sad-1a.png",
+    "./assets/010-happy-3a.png",
+    "./assets/011-paina.png",
+    "./assets/012-muteda.png",
+    "./assets/013-meha.png",
+    "./assets/014-laugha.png",
     "./assets/015-illa.png",
     "./assets/016-happy-2a.png",
     "./assets/017-happy-1a.png",
@@ -84,6 +84,7 @@ function loadImages(arr) {
                     divError.className = "error";
                     console.log(e);
                     divError.setAttribute("wrongUrl", e.path[0].currentSrc);
+
                     errorsContainer.appendChild(divError);
                     reject(e);
                 });

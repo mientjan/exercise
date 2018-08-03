@@ -4,6 +4,19 @@ $height: 800px;
 body{
   margin: 0;
   padding: 0;
+  font-size: 30px;
+  font-family: "Courier New";
+}
+
+.imagesContainerLabel{
+  position: relative;
+  width: $width;
+  height: 50px;
+  left: 50px;
+  clear: both;
+  text-align: center;
+  background-color: rgba(144, 238, 144, 0.47);
+  line-height: 50px;
 }
 
 .imagesContainer{
@@ -17,18 +30,15 @@ body{
   clear: both;
 }
 
-.finishedDiv{
+.errorsContainerLabel{
   position: relative;
-  box-sizing: border-box;
   width: $width;
-  height: $height / 4;
-  background-color: #FFF;
+  height: 50px;
   left: 50px;
+  clear: both;
   text-align: center;
-  font-size: 50px;
-  font-family: "Courier New";
-  line-height: $height / 4;
-  opacity: 0;
+  background-color: rgba(240, 128, 128, 0.47);
+  line-height: 50px;
 }
 
 .errorsContainer{
@@ -39,8 +49,20 @@ body{
   background-color: lightcoral;
   left: 50px;
   overflow-y: scroll;
-
   background-color: rgba(240, 128, 128, 0.15);
+}
+
+.finishedDiv{
+  position: relative;
+  box-sizing: border-box;
+  width: $width;
+  height: 100px;
+  background-color: #FFF;
+  left: 50px;
+  text-align: center;
+  line-height: 100px;
+  opacity: 0;
+  font-size: 50px;
 }
 
 .face{
@@ -63,6 +85,7 @@ body{
   display: block;
   clear: both;
   border-radius: 25px;
+  font-size: 15px;
 }
 
 .error:after {
@@ -70,6 +93,6 @@ body{
   min-width: 500px;
   content: attr(wrongUrl);
   color: red;
-  left: 55px;
+  left: 60px;
   line-height: 50px;
 }
