@@ -1,55 +1,75 @@
 $width: 1000px;
 $height: 800px;
 
-
-.wrapper{
-  position: relative;
-  box-sizing: content-box;
-  width: $width;
-  height: $height;
-  overflow: hidden;
-  background-color: #FFF;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+body{
+  margin: 0;
+  padding: 0;
 }
 
 .imagesContainer{
   position: relative;
-  box-sizing: border-box;
-  width: $width * 70 / 100 ;
-  height: $height;
-  border: solid 1px #000;
+  box-sizing: content-box;
+  width: $width;
+  height: $height / 2;
   overflow: hidden;
+  background-color: rgba(144, 238, 144, 0.15);
+  left: 50px;
+  clear: both;
+}
+
+.finishedDiv{
+  position: relative;
+  box-sizing: border-box;
+  width: $width;
+  height: $height / 4;
   background-color: #FFF;
-  float: left;
+  left: 50px;
+  text-align: center;
+  font-size: 50px;
+  font-family: "Courier New";
+  line-height: $height / 4;
+  opacity: 0;
 }
 
 .errorsContainer{
   position: relative;
   box-sizing: border-box;
-  width: $width * 20 / 100;
-  height: $height;
-  border: solid 1px #000;
-  overflow: hidden;
-  background-color: #FFF;
-  float: right;
+  width: $width;
+  height: $height / 4;
+  background-color: lightcoral;
+  left: 50px;
+  overflow-y: scroll;
+
+  background-color: rgba(240, 128, 128, 0.15);
 }
 
 .face{
-  position: absolute;
+  position: relative;
+  opacity: 0;
   width: 50px;
   height: 50px;
+  background: yellow;
+  border-radius: 25px;
 }
 
 .error{
   position: relative;
-  float: right;
+  float: left;
   bottom: 0;
   right: 0;
   width: 50px;
   height: 50px;
   background: red;
-  display: inline-block;
+  display: block;
+  clear: both;
   border-radius: 25px;
+}
+
+.error:after {
+  position: absolute;
+  min-width: 500px;
+  content: attr(wrongUrl);
+  color: red;
+  left: 55px;
+  line-height: 50px;
 }
