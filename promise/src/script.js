@@ -1,7 +1,7 @@
 /**
  * loadImage load a image with a promise structure
  * @param url
- * @return {Promise<any>}
+ * @return {Promise <any>}
  */
 function loadImage(url) {
   return new Promise(function(resolve, reject) {
@@ -10,11 +10,13 @@ function loadImage(url) {
     img.className = "face";
 
     img.onload = function() {
-      resolve(this);
+        console.log("onload");
+        resolve(this);
     };
 
     img.onerror = function(e) {
-      reject(e);
+        console.log("onerror");
+        reject(e);
     };
 
     img.src = url;
@@ -54,40 +56,144 @@ var imagesUrls = [
   "./assets/015-ill.png",
   "./assets/016-happy-2.png",
   "./assets/017-happy-1.png",
-  "./assets/018-cute.png",
-  "./assets/019-crying.png",
-  "./assets/020-crazy.png",
-  "./assets/021-cool.png",
-  "./assets/022-bored.png",
-  "./assets/023-blush.png",
-  "./assets/024-sad.png",
-  "./assets/025-happy.png"
+  "./assets/018-cutea.png",
+  "./assets/019-cryinga.png",
+  "./assets/020-crazya.png",
+  "./assets/021-coola.png",
+  "./assets/022-boreda.png",
+  "./assets/023-blusha.png",
+  "./assets/024-sada.png",
+  "./assets/025-happya.png"
 ];
 
 /// WRITE CODE UNDER HERE
-
 var imagesContainer = document.querySelector(".imagesContainer");
 var errorsContainer = document.querySelector(".errorsContainer");
+var successArray = [];
 
-function displayimages(images){
-    var targetimage = imagesUrls.shift() // process doggies images one at a time
-    if (targetimage){ // if not end of array
-        loadImage(targetimage)
-          .then(function(url){ // load image then...
-            imagesContainer.appendChild(url) // add image to DIV
-            displayimages(images) // recursion- call displayimages() again to process next image/doggy
-          })
-          .catch(function(e){ // handle an image not loading
-              console.log('Error loading ', e)
-              var divError = document.createElement("div"); 
-              divError.className = "error"; 
-              errorsContainer.appendChild(divError);
-              displayimages(images) // recursion- call displayimages() again to process next image/doggy
-          })
-    }
+/**
+ * loadImages loads recursively an array of images
+ * @param arr, an array containing URLs for images
+ * @return {Promise <any>}
+ */
+function loadImages(arr) {
+    return new Promise(function(resolve, reject) {
+        arr.forEach(elem => {
+            console.log(elem);
+            loadImage(elem)
+                .then(elem => {
+                    successArray.push(elem);
+                    imagesContainer.appendChild(elem);
+                    resolve();
+                })
+                .catch(e => {
+                    var divError = document.createElement("div");
+                    divError.className = "error";
+                    errorsContainer.appendChild(divError);
+                    console.log("e: ", e);
+                    reject(e);
+                });
+        })
+        console.log("!!! USE THIS !!!", successArray);
+
+    });
+
+    /*
+    var imagesContainer = document.querySelector(".imagesContainer");
+    var errorsContainer = document.querySelector(".errorsContainer");
+    var successArray = [];
+
+    arr.forEach(elem => {
+        console.log(elem);
+        loadImage(elem)
+            .then(elem => {
+                successArray.push(elem);
+                imagesContainer.appendChild(elem);
+            })
+            .catch(e => {
+                var divError = document.createElement("div");
+                divError.className = "error";
+                errorsContainer.appendChild(divError);
+                console.log("e: ", e)
+            });
+    })
+    console.log("!!! USE THIS !!!", successArray);
+    return successArray;
+
+    */
 }
 
-displayimages(imagesUrls)
+let currentIndex = 0;
+let ANIMATION_DURATION = .25;
+
+// Looping function which gets executed for each image
+function animateNextImage() {
+    console.log("ajsgvfliasvfgliashvflihsavflishavflisahvf")
+    let currentImage = successArray[currentIndex];
+    // Animating all items
+    animate(currentImage, ANIMATION_DURATION, '200px', '0px')
+        .then(() => {
+            return animate(currentImage, ANIMATION_DURATION, '200px', '200px');
+        })
+        .then(() => {
+            return animate(currentImage, ANIMATION_DURATION, '0px', '200px');
+        })
+        .then(() => {
+            return animate(currentImage, ANIMATION_DURATION, '0px', '0px');
+        })
+        .then(() => {
+            currentIndex++;
+
+            // Checking if at the end of array
+            if (currentIndex === successArray.length) {
+
+                // All images are animated
+                console.log('finished')
+            } else {
+
+                // If not starting the animation for the next item.
+                animateNextImage();
+            }
+        })
+        .catch(reason => {
+            console.error(reason);
+        });
+}
+
+loadImages(imagesUrls)
+    .then(successArray => {
+        console.log("now I need to animate them BOH", successArray);
+        animateNextImage();
+    })
+    .catch(e => {
+        console.log("some error happened: ", e)
+    });
+
+
+//var allImagesFinishedPromise = Promise.all(promises);
+
+
+
+
+// function displayimages(images){
+//     var targetimage = images.shift() /* process doggies images one at a time*/
+//     if (targetimage){ // if not end of array
+//         loadImage(targetimage)
+//           .then(function(url){ // load image then...
+//             imagesContainer.appendChild(url) // add image to DIV
+//             displayimages(images) // recursion- call displayimages() again to process next image/doggy
+//           })
+//           .catch(function(e){ // handle an image not loading
+//               console.log('Error loading ', e)
+//               var divError = document.createElement("div");
+//               divError.className = "error";
+//               errorsContainer.appendChild(divError);
+//               displayimages(images) // recursion- call displayimages() again to process next image/doggy
+//           })
+//     }
+// }
+
+// displayimages(imagesUrls);
 
 /*
 
