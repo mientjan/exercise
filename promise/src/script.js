@@ -5,7 +5,7 @@
  */
 function loadImage(url) {
   return new Promise(function(resolve, reject) {
-    var img = document.createElement("img");
+    let img = document.createElement("img");
     img.className = "face";
     img.onload = function() {
         resolve(this);
@@ -32,38 +32,38 @@ function animate(element, duration, x, y) {
   });
 }
 
-var imagesUrls = [
+let imagesUrls = [
     "./assets/001-yawn.png",
     "./assets/002-wink.png",
     "./assets/003-smile-1.png",
     "./assets/004-smile.png",
     "./assets/005-surprise.png",
-    "./assets/006-shockeda.png",
-    "./assets/007-sceptica.png",
-    "./assets/008-sad-2a.png",
-    "./assets/009-sad-1a.png",
-    "./assets/010-happy-3a.png",
-    "./assets/011-paina.png",
-    "./assets/012-muteda.png",
-    "./assets/013-meha.png",
-    "./assets/014-laugha.png",
-    "./assets/015-illa.png",
-    "./assets/016-happy-2a.png",
-    "./assets/017-happy-1a.png",
-    "./assets/018-cutea.png",
-    "./assets/019-cryinga.png",
-    "./assets/020-crazya.png",
-    "./assets/021-coola.png",
-    "./assets/022-boreda.png",
-    "./assets/023-blusha.png",
-    "./assets/024-sadaaa.png",
-    "./assets/025-happya.png"
+    "./assets/006-shocked.png",
+    "./assets/007-sceptic.png",
+    "./assets/008-sad-2.png",
+    "./assets/009-sad-1.png",
+    "./assets/010-happy-3.png",
+    "./assets/011-pain.png",
+    "./assets/012-muted.png",
+    "./assets/013-meh.png",
+    "./assets/014-laugh.png",
+    "./assets/015-ill.png",
+    "./assets/016-happy-2.png",
+    "./assets/017-happy-1.png",
+    "./assets/018-cute.png",
+    "./assets/019-crying.png",
+    "./assets/020-crazy.png",
+    "./assets/021-cool.png",
+    "./assets/022-bored.png",
+    "./assets/023-blush.png",
+    "./assets/024-sad.png",
+    "./assets/025-happy.png"
 ];
 
 /// WRITE CODE UNDER HERE
-var imagesContainer = document.querySelector(".imagesContainer");
-var errorsContainer = document.querySelector(".errorsContainer");
-var successArray = [];
+let imagesContainer = document.querySelector(".imagesContainer");
+let errorsContainer = document.querySelector(".errorsContainer");
+let successArray = [];
 
 /**
  * loadImages loads recursively an array of images
@@ -80,7 +80,7 @@ function loadImages(arr) {
                     resolve();
                 })
                 .catch(e => {
-                    var divError = document.createElement("div");
+                    let divError = document.createElement("div");
                     divError.className = "error";
                     console.log(e);
                     divError.setAttribute("wrongUrl", e.path[0].currentSrc);
@@ -92,38 +92,38 @@ function loadImages(arr) {
     });
 }
 
-var imagesIndex = 0;
-var animDuration = .25;
-var containerProperties = imagesContainer.getBoundingClientRect();
+
+let imagesIndex = 0;
+let animationDuration = .15;
+let containerProperties = imagesContainer.getBoundingClientRect();
 
 function animateNextImage() {
     console.log("animating a single image...");
-    var currentImage = successArray[imagesIndex];
-    var currentImageProperties = currentImage.getBoundingClientRect();
+    let currentImage = successArray[imagesIndex];
+    let currentImageProperties = currentImage.getBoundingClientRect();
 
-    var containerTop = "0px";
-    var containerRight = (containerProperties.width - currentImageProperties.left) + "px";
-    var containerBottom = (containerProperties.height - currentImageProperties.height + containerProperties.top - currentImageProperties.top) + "px";
-    var containerLeft = "0px";
+    let containerTop = 0;
+    let containerLeft = 0;
+    let containerRight = (containerProperties.width - currentImageProperties.left) + "px";
+    let containerBottom = (containerProperties.height - currentImageProperties.height + containerProperties.top - currentImageProperties.top) + "px";
 
-
-    animate(currentImage, animDuration, containerRight, containerTop)
+    animate(currentImage, animationDuration, containerRight, containerTop)
         .then(() => {
-            return animate(currentImage, animDuration, containerRight, containerBottom);
+            return animate(currentImage, animationDuration, containerRight, containerBottom);
         })
         .then(() => {
-            return animate(currentImage, animDuration, containerLeft, containerBottom);
+            return animate(currentImage, animationDuration, containerLeft, containerBottom);
         })
         .then(() => {
-            return animate(currentImage, animDuration, containerLeft, containerTop);
+            return animate(currentImage, animationDuration, containerLeft, containerTop);
         })
         .then(() => {
-            TweenMax.to(currentImage, animDuration, {background: "green"})
+            TweenMax.to(currentImage, animationDuration, {background: "green"})
         })
         .then(() => {
             imagesIndex++;
             if (imagesIndex === successArray.length) {
-                var finishedDiv = document.querySelector(".finishedDiv");
+                let finishedDiv = document.querySelector(".finishedDiv");
                 TweenMax.to(finishedDiv, .5, {opacity: 1});
             } else {
                 animateNextImage();
