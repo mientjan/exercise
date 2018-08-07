@@ -42,20 +42,20 @@ let imagesUrls = [
     "./assets/009-sad-1.png",
     "./assets/010-happy-3.png",
     "./assets/011-pain.png",
-    // "./assets/012-muted.png",
-    // "./assets/013-meh.png",
-    // "./assets/014-laugh.png",
-    // "./assets/015-ill.png",
-    // "./assets/016-happy-2.png",
-    // "./assets/017-happy-1.png",
-    // "./assets/018-cute.png",
-    // "./assets/019-crying.png",
-    // "./assets/020-crazy.png",
-    // "./assets/021-cool.png",
-    // "./assets/022-bored.png",
-    // "./assets/023-blush.png",
-    // "./assets/024-sad.png",
-    // "./assets/025-happy.png"
+    "./assets/012-muted.png",
+    "./assets/013-meh.png",
+    "./assets/014-laugh.png",
+    "./assets/015-ill.png",
+    "./assets/016-happy-2.png",
+    "./assets/017-happy-1.png",
+    "./assets/018-cute.png",
+    "./assets/019-crying.png",
+    "./assets/020-crazy.png",
+    "./assets/021-cool.png",
+    "./assets/022-bored.png",
+    "./assets/023-blush.png",
+    "./assets/024-sad.png",
+    "./assets/025-happy.png"
 ];
 
 /// WRITE CODE UNDER HERE
@@ -122,27 +122,25 @@ function checkLoop() {
  */
 let successArray = [];
 
-
 function loadImages(arr) {
     let promiseArray = [];
     arr.forEach(elem => {
-        var prom = loadImage(elem)
+        let prom = loadImage(elem)
             .then(elem => {
                 successArray.push(elem);
                 return appendWithClassName(elem, ".imagesContainer", "face").then(() => {
                     return elem;
                 });
             }, err => {
-                return null;
+                let divError = document.createElement("div");
+                return appendWithClassName(divError, ".errorsContainer", "error").then(() => {
+                    divError.setAttribute("wrongUrl", err.path[0].currentSrc);
+                    return err;
+                });
             });
-
         promiseArray.push(prom);
-
     });
-
     return Promise.all(promiseArray);
-
-    // });
 }
 
 function animationLoop(animationDuration) {
