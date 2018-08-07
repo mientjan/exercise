@@ -164,3 +164,9 @@ function animationLoop(animationDuration) {
 }
 
 loadImages(imagesUrls).then(() => animationLoop(.25));
+
+// imagesUrls.forEach(img => {
+//     loadImage(img).then(test => {
+//         console.log("test", test);
+//     });
+// })
