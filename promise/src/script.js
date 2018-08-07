@@ -96,9 +96,168 @@ function appendWithClassName(element, container, className) {
     return new Promise(function(resolve) {
         document.querySelector(container).appendChild(element);
         element.className = className;
-        resolve();
+        resolve(element);
     });
 }
+
+
+let promisesArray = [];
+
+imagesUrls.forEach(image => {
+    promisesArray.push(loadImage(image));
+});
+
+console.log("promisesArray", promisesArray);
+
+Promise.all(promisesArray.map((promise, index) => {
+    console.log(promise);
+    console.log(index);
+    return new Promise((resolve, reject) => { // (*)
+        setTimeout(() => resolve(index * 2), 1000);
+    });
+}))
+
+
+/*
+    new Promise(function(resolve, reject) {
+
+  setTimeout(() => resolve(1), 1000);
+
+}).then(function(result) {
+
+  alert(result); // 1
+
+  return new Promise((resolve, reject) => { // (*)
+    setTimeout(() => resolve(result * 2), 1000);
+  });
+
+}).then(function(result) { // (**)
+
+  alert(result); // 2
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(result * 2), 1000);
+  });
+
+}).then(function(result) {
+
+  alert(result); // 4
+
+});new Promise(function(resolve, reject) {
+
+  setTimeout(() => resolve(1), 1000);
+
+}).then(function(result) {
+
+  alert(result); // 1
+
+  return new Promise((resolve, reject) => { // (*)
+    setTimeout(() => resolve(result * 2), 1000);
+  });
+
+}).then(function(result) { // (**)
+
+  alert(result); // 2
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(result * 2), 1000);
+  });
+
+}).then(function(result) {
+
+  alert(result); // 4
+
+});
+
+/*
+Promise.all(promisesArray).then((result) => {
+    console.log(result);
+    console.log(result.length);
+
+    result.map(function(singleImage, i) {
+        return appendWithClassName(result[i], ".imagesContainer", "face").then(() => {
+            return colorImage(result[i], 1, "yellow")
+                .then(() => {return animate(result[i], 1, 10, 0)})
+                .then(() => {return animate(result[i], 1, 10, 10)})
+                .then(() => {return animate(result[i], 1, 0, 10)})
+                .then(() => {return animate(result[i], 1, 0, 0)})
+                .then(() => {return colorImage(result[i], 1, "green")})
+        })
+    });
+
+});
+
+
+*/
+
+// let allImagesFinishedPromise = Promise.all(promisesArray);
+
+
+/*
+
+Promise.all(promisesArray.map(function(promise) {
+    return promise.resolve().then(image => {
+        console.log(image);
+    });
+}))
+
+
+allImagesFinishedPromise.then(images => {
+        console.log(images);
+        images.map(function(singleImage, index) {
+            console.log(index);
+            console.log(singleImage);
+            return appendWithClassName(singleImage, ".imagesContainer", "face").then(() => {
+                return colorImage(singleImage, 1, "red");
+            })
+        });
+    }
+);
+*/
+
+/*
+Promise.all(promisesArray.map(prom => {
+    console.log(prom);
+    return prom.then(image => {
+        return appendWithClassName(image, ".imagesContainer", "face").then(() => {
+            return animate(image, 1, 100, 100);
+        })
+    })
+})).then(() => {
+    console.log("finished");
+});
+
+*/
+
+/*
+Promise.all(promisesArray).then((result) => {
+    result.map(function(image) {
+        appendWithClassName(image, ".imagesContainer", "face").then(() => {
+            animate(image, 1, 100, 100)
+        })
+        //return animate(image, 1, 100, 100);
+    });
+});
+*/
+
+/*
+console.log("imagesUrls: ", imagesUrls);
+loadImage(image).then((elem) => {
+    appendWithClassName(elem, ".imagesContainer", "face").then(() => {
+        colorImage(elem, 1, "yellow")
+            .then(() => animate(elem, 1, 100, 0))
+            .then(() => animate(elem, 1, 100, 100))
+            .then(() => animate(elem, 1, 0, 100))
+            .then(() => animate(elem, 1, 0, 0))
+            .then(() => colorImage(elem, 1, "green"))
+            .then(() => imagesUrls.shift())
+    })
+})
+*/
+
+
+
+
 
 let imagesIndex = 0;
 
@@ -116,18 +275,18 @@ function checkLoop() {
 
 
 /**
- * loadImages loads recursively an array of images
+ * loadAndAppendImages loads recursively an array of images
  * @param arr, an array containing URLs for images
  * @return {Promise <any>}
  */
-let successArray = [];
-
-function loadImages(arr) {
+function loadAndAppendImages(arr) {
     let promiseArray = [];
+    //let successArray = [];
+
     arr.forEach(elem => {
         let prom = loadImage(elem)
             .then(elem => {
-                successArray.push(elem);
+                //successArray.push(elem);
                 return appendWithClassName(elem, ".imagesContainer", "face").then(() => {
                     return elem;
                 });
@@ -140,19 +299,28 @@ function loadImages(arr) {
             });
         promiseArray.push(prom);
     });
-    return Promise.all(promiseArray);
+
+    //return Promise.all(promiseArray);
+
+    return Promise.all(promiseArray.map(function(singlePromise){
+        console.log("singlePromise: ", singlePromise);
+    }))
+        .then(result => console.log("bbb", result));
+
+
 }
 
-function animationLoop(animationDuration) {
+function animationLoop(elem, animationDuration) {
     console.log("animating a single image...");
-    let currentImage = successArray[imagesIndex];
+    let currentImage = elem;
+    console.log("elem: ", elem);
     let currentImageProperties = currentImage.getBoundingClientRect();
 
     let containerProperties = document.querySelector('.imagesContainer').getBoundingClientRect();
     let containerTop = 0;
     let containerLeft = 0;
-    let containerRight = (containerProperties.width - currentImageProperties.left) + "px";
-    let containerBottom = (containerProperties.height - currentImageProperties.height + containerProperties.top - currentImageProperties.top) + "px";
+    let containerRight = containerProperties.width - currentImageProperties.left;
+    let containerBottom = containerProperties.height - currentImageProperties.height + containerProperties.top - currentImageProperties.top;
 
     colorImage(currentImage, animationDuration, "yellow")
         .then(() => animate(currentImage, animationDuration, containerRight, containerTop))
@@ -163,7 +331,8 @@ function animationLoop(animationDuration) {
         .then(() => checkLoop());
 }
 
-loadImages(imagesUrls).then(() => animationLoop(.25));
+// loadAndAppendImages(imagesUrls).then(() => animationLoop(.25));
+//loadAndAppendImages(imagesUrls);
 
 // imagesUrls.forEach(img => {
 //     loadImage(img).then(test => {
