@@ -109,6 +109,19 @@ imagesUrls.forEach(image => {
 
 console.log("promisesArray", promisesArray);
 
+Promise.all(promisesArray).then((result) => {
+    console.log(result);
+    console.log(result.length);
+    result.map(function(currentValue, index, array) {
+        return appendWithClassName(currentValue, ".imagesContainer", "face");
+    });
+});
+
+
+
+console.log(new_array);
+
+/*
 Promise.all(promisesArray.map((promise, index) => {
     console.log(promise);
     console.log(index);
