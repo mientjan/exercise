@@ -35,27 +35,27 @@ let imagesUrls = [
     "./assets/002-wink.png",
     "./assets/003-smile-1.png",
     "./assets/004-smile.png",
-    "./assets/005-surprise.png",
-    "./assets/006-shocked.png",
-    "./assets/007-sceptic.png",
-    "./assets/008-sad-2.png",
-    "./assets/009-sad-1.png",
-    "./assets/010-happy-3.png",
-    "./assets/011-pain.png",
-    "./assets/012-muted.png",
-    "./assets/013-meh.png",
-    "./assets/014-laugh.png",
-    "./assets/015-ill.png",
-    "./assets/016-happy-2.png",
-    "./assets/017-happy-1.png",
-    "./assets/018-cute.png",
-    "./assets/019-crying.png",
-    "./assets/020-crazy.png",
-    "./assets/021-cool.png",
-    "./assets/022-bored.png",
-    "./assets/023-blush.png",
-    "./assets/024-sad.png",
-    "./assets/025-happy.png"
+    // "./assets/005-surprise.png",
+    // "./assets/006-shocked.png",
+    // "./assets/007-sceptic.png",
+    // "./assets/008-sad-2.png",
+    // "./assets/009-sad-1.png",
+    // "./assets/010-happy-3.png",
+    // "./assets/011-pain.png",
+    // "./assets/012-muted.png",
+    // "./assets/013-meh.png",
+    // "./assets/014-laugh.png",
+    // "./assets/015-ill.png",
+    // "./assets/016-happy-2.png",
+    // "./assets/017-happy-1.png",
+    // "./assets/018-cute.png",
+    // "./assets/019-crying.png",
+    // "./assets/020-crazy.png",
+    // "./assets/021-cool.png",
+    // "./assets/022-bored.png",
+    // "./assets/023-blush.png",
+    // "./assets/024-sad.png",
+    // "./assets/025-happy.png"
 ];
 
 /// WRITE CODE UNDER HERE
@@ -85,21 +85,6 @@ function colorImage(element, duration, color) {
     });
 }
 
-/**
- * Append an element to a container
- * @param {HTMLElement} element, the element to be appended
- * @param {string} container, the element in which to append
- * @param {string} className, a string with the className for the appended element
- * @return {Promise <any>}
- */
-function appendWithClassName(element, container, className) {
-    return new Promise(function(resolve) {
-        document.querySelector(container).appendChild(element);
-        element.className = className;
-        resolve(element);
-    });
-}
-
 
 let promisesArray = [];
 
@@ -107,8 +92,118 @@ imagesUrls.forEach(image => {
     promisesArray.push(loadImage(image));
 });
 
+
 console.log("promisesArray", promisesArray);
 
+Promise.all(promisesArray).then(imagesArray => {
+
+    console.log("images array", imagesArray);
+
+    imagesArray.forEach(currentImage => {
+        currentImage.className = "face";
+        document.querySelector(".imagesContainer").appendChild(currentImage);
+    });
+
+    let result = imagesArray.reduce((previousValue, currentValue) => {
+        return previousValue
+            .then(() => animate(currentValue, 1, 100, 0))
+            .then(() => animate(currentValue, 1, 100, 100))
+            .then(() => animate(currentValue, 1, 0, 100))
+            .then(() => animate(currentValue, 1, 0, 0))
+            .then(() => console.log("ssfs"))
+    }, Promise.resolve([]).then(
+        console.log("aaaaa")
+    ));
+
+});
+
+
+/*
+let allImagesFinishedPromise = Promise.all(promisesArray);
+
+let promise = allImagesFinishedPromise.then(images => {
+
+    // Appending all images to dom
+    images.forEach(currentImage => {
+        currentImage.className = "face";
+        document.querySelector(".imagesContainer").appendChild(currentImage);
+    });
+
+    function animateNextImage(index) {
+        console.log(index);
+        let currentImage = images[index];
+
+        return new Promise(function(resolve) {
+            return animate(currentImage, 1, 100, 0)
+                .then(() => {
+                    return animate(currentImage, 1, 100, 100);
+                })
+                .then(() => {
+                    return animate(currentImage, 1, 0, 100);
+                })
+                .then(() => {
+                    return animate(currentImage, 1, 0, 0);
+                })
+                .then(() => {
+                    resolve();
+                })
+        });
+
+    }
+
+    images.map((value, index) => {
+        animateNextImage(index);
+    });
+});
+
+/*
+
+ /*
+let allImagesLoadedPromise = Promise.all(promisesArray);
+
+allImagesLoadedPromise.then(images => {
+    console.log(images);
+
+    images.forEach(image => {
+        image.className = "face";
+        document.querySelector(".imagesContainer").appendChild(image);
+    });
+
+
+
+
+    function animateSingleImage(img){
+        console.log("img: ", img);
+        let currentImage = img;
+
+        let prom = animate(currentImage, 1, 10, 0)
+            .then(() => {
+                return animate(currentImage, 1, 10, 10).then(() => {
+                    return animate(currentImage, 1, 0, 10).then(() => {
+                        return animate(currentImage, 1, 0, 0).then(() => {
+                            return currentImage;
+                        });
+                    });
+                });
+            }, err => {
+                let divError = document.createElement("div");
+                return appendWithClassName(divError, ".errorsContainer", "error").then(() => {
+                    divError.setAttribute("wrongUrl", err.path[0].currentSrc);
+                    return err;
+                });
+            });
+    }
+
+    images.map((value, index) => {
+        console.log(value, index);
+        animateSingleImage(value);
+    })
+
+
+});
+*/
+
+/*
 Promise.all(promisesArray).then((result) => {
     console.log(result);
     console.log(result.length);
@@ -271,7 +366,7 @@ loadImage(image).then((elem) => {
 
 
 
-
+/*
 let imagesIndex = 0;
 
 function checkLoop() {
@@ -286,12 +381,13 @@ function checkLoop() {
     });
 }
 
-
+*/
 /**
  * loadAndAppendImages loads recursively an array of images
  * @param arr, an array containing URLs for images
  * @return {Promise <any>}
  */
+/*
 function loadAndAppendImages(arr) {
     let promiseArray = [];
     //let successArray = [];
@@ -343,7 +439,7 @@ function animationLoop(elem, animationDuration) {
         .then(() => colorImage(currentImage, animationDuration, "green"))
         .then(() => checkLoop());
 }
-
+*/
 // loadAndAppendImages(imagesUrls).then(() => animationLoop(.25));
 //loadAndAppendImages(imagesUrls);
 
