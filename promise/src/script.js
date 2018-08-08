@@ -99,17 +99,10 @@ imagesUrls.forEach(image => {
     promisesArray.push(loadImage(image));
 });
 
-
-console.log("promisesArray", promisesArray);
-
 Promise.all(promisesArray).then(imagesArray => {
 
-    console.log("images array", imagesArray);
-
-    let finishedAnimationsPromises = [];
-
-    imagesArray.reduce((previousValue, currentValue) => {
-        return previousValue
+    imagesArray.reduce((promiseChain, currentValue) => {
+        return promiseChain
             .then(() => appendWithClassName(currentValue, ".imagesContainer", "face"))
             .then(() => colorImage(currentValue, .1, "yellow"))
             .then(() => animate(currentValue, .1, 100, 0))
@@ -119,10 +112,8 @@ Promise.all(promisesArray).then(imagesArray => {
             .then(() => colorImage(currentValue, .1, "green"))
             .then(() => {
                 console.log("a single image has just finished animating");
-                finishedAnimationsPromises.push(Promise.resolve(currentValue));
-                if (finishedAnimationsPromises.length === imagesArray.length){
-                    console.log("finished");
-                }
             })
-    }, Promise.resolve([]));
+    }, Promise.resolve([])).then(() => {
+        console.log("finished");
+    });
 });
