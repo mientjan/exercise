@@ -111,3 +111,19 @@ Promise.all(imagesUrls.map(loadImage)).then(imagesArray => {
         console.log("finished");
     });
 });
+
+
+// GENERIC APPROACH TO SERIAL PROMISES
+
+const promiseSerial = funcs =>
+    funcs.reduce((promise, func) =>
+            promise.then(result => func().then(Array.prototype.concat.bind(result))),
+        Promise.resolve([]))
+
+// convert each url to a function that returns a promise
+const funcs = imagesUrls.map(url => () => loadImage(url))
+
+// execute Promises in serial
+promiseSerial(funcs)
+    .then(console.log.bind(funcs))
+    .catch(console.error.bind(console))
