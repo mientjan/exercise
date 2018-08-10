@@ -93,14 +93,7 @@ function colorImage(element, duration, color) {
     });
 }
 
-let promisesArray = [];
-
-imagesUrls.forEach(image => {
-    promisesArray.push(loadImage(image));
-});
-
-Promise.all(promisesArray).then(imagesArray => {
-
+Promise.all(imagesUrls.map(loadImage)).then(imagesArray => {
     imagesArray.reduce((promiseChain, currentValue) => {
         return promiseChain
             .then(() => appendWithClassName(currentValue, ".imagesContainer", "face"))
@@ -113,7 +106,7 @@ Promise.all(promisesArray).then(imagesArray => {
             .then(() => {
                 console.log("a single image has just finished animating");
             })
-    }, Promise.resolve([])).then(() => {
+    }, Promise.resolve()).then(() => {
         console.log("finished");
     });
 });
