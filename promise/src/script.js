@@ -35,27 +35,27 @@ let imagesUrls = [
     "./assets/002-wink.png",
     "./assets/003-smile-1.png",
     "./assets/004-smile.png",
-    // "./assets/005-surprise.png",
-    // "./assets/006-shocked.png",
-    // "./assets/007-sceptic.png",
-    // "./assets/008-sad-2.png",
-    // "./assets/009-sad-1.png",
-    // "./assets/010-happy-3.png",
-    // "./assets/011-pain.png",
-    // "./assets/012-muted.png",
-    // "./assets/013-meh.png",
-    // "./assets/014-laugh.png",
-    // "./assets/015-ill.png",
-    // "./assets/016-happy-2.png",
-    // "./assets/017-happy-1.png",
-    // "./assets/018-cute.png",
-    // "./assets/019-crying.png",
-    // "./assets/020-crazy.png",
-    // "./assets/021-cool.png",
-    // "./assets/022-bored.png",
-    // "./assets/023-blush.png",
-    // "./assets/024-sad.png",
-    // "./assets/025-happy.png"
+    "./assets/005-surprise.png",
+    "./assets/006-shocked.png",
+    "./assets/007-sceptic.png",
+    "./assets/008-sad-2.png",
+    "./assets/009-sad-1.png",
+    "./assets/010-happy-3.png",
+    "./assets/011-pain.png",
+    "./assets/012-muted.png",
+    "./assets/013-meh.png",
+    "./assets/014-laugh.png",
+    "./assets/015-ill.png",
+    "./assets/016-happy-2.png",
+    "./assets/017-happy-1.png",
+    "./assets/018-cute.png",
+    "./assets/019-crying.png",
+    "./assets/020-crazy.png",
+    "./assets/021-cool.png",
+    "./assets/022-bored.png",
+    "./assets/023-blush.png",
+    "./assets/024-sad.png",
+    "./assets/025-happy.png"
 ];
 
 /// WRITE CODE UNDER HERE
@@ -97,6 +97,7 @@ Promise.all(imagesUrls.map(loadImage)).then(imagesArray => {
     imagesArray.reduce((promiseChain, currentValue) => {
         return promiseChain
             .then(() => appendWithClassName(currentValue, ".imagesContainer", "face"))
+            .then(() => fadeIn(currentValue, 1))
             .then(() => colorImage(currentValue, .1, "yellow"))
             .then(() => animate(currentValue, .1, 100, 0))
             .then(() => animate(currentValue, .1, 100, 100))
