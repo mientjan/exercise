@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "dev": "node ./node_modules/@mediamonks/richmedia-temple-server/dev.js",
+    "build": "node ./node_modules/@mediamonks/richmedia-temple-server/build.js"
+  },
+
+  "dependencies": {
+    "@mediamonks/richmedia-temple-server": "^1.4.1",
+    "@mediamonks/temple": "^1.1.10"
+  }
+}
