@@ -3,15 +3,17 @@ import Particle from "./Particle";
 import isOutOfBounds from "./isOutOfBounds";
 
 export default class ParticleEmitter {
-  constructor(canvas, options = {}) {
-    this.maxParticles = options.maxParticles || 100;
-    this.maxSpawnAmount = options.maxSpawnAmount || 2;
+  constructor(canvas, { maxParticles = 200, spawnPerUpdate = 8 } = {maxParticles: 100, spawnPerUpdate: 2}) {
+    this.maxParticles = maxParticles;
+    this.spawnPerUpdate = spawnPerUpdate;
 
     this.count = 0;
     this._particles = [];
     this._particlesLength = this._particles.length;
+
     this._particleClasses = [];
     this._particleClassesLength = this._particleClasses.length;
+
     this.ctx = canvas.getContext("2d");
   }
 
@@ -49,19 +51,21 @@ export default class ParticleEmitter {
   }
 
   tick = () => {
-  	const {width, height} = this.ctx.canvas;
-	  this.ctx.clearRect(0, 0, width, height);
+    const { width, height } = this.ctx.canvas;
+    this.ctx.clearRect(0, 0, width, height);
     this._particles.forEach(particle => {
       particle.update();
       particle.render(this.ctx);
     });
 
-    for (let i = 0; i < this.maxSpawnAmount; i++) {
+
+
+    for (let i = 0; i < this.spawnPerUpdate; i++) {
       if (this.maxParticles > this._particlesLength) {
         const [ParticleClass, settingsFunction] = this._particleClasses[
           this.count % this._particleClassesLength
         ];
-        const particle = new ParticleClass(settingsFunction());
+        const particle = new ParticleClass(settingsFunction(width, height));
 
         this._particles.push(particle);
         this._particlesLength = this._particles.length;
@@ -69,11 +73,9 @@ export default class ParticleEmitter {
       }
     }
 
-    this._particles = this._particles.filter(part => {
-	    return part.timeToLive > 0 && !isOutOfBounds(part, width, height)
+    this._particles = this._particles.filter(particle => {
+      return particle.timeToLive > 0 && !isOutOfBounds(particle, width, height);
     });
     this._particlesLength = this._particles.length;
-
-
   };
 }

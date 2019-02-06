@@ -11,11 +11,12 @@ export default class Particle extends Vector3 {
   update(){
 	  this.x += this.vector.x;
 	  this.y += this.vector.y;
+	  this.z += this.vector.z;
 	  this.timeToLive = Math.max(0, this.timeToLive - 1);
   }
 
   render(ctx) {
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "blue";
     ctx.fillRect(this.x, this.y, 10, 10);
   }
 }
