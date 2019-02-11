@@ -35,7 +35,7 @@ export default class ParticleEmitter {
     if (this._raf) {
       this._raf.stop();
     }
-    this._raf = raf(this.tick);
+    this._raf = raf(this.tick.bind(this));
     this._raf.start();
 
     this.ctx.fillStyle = "black";
@@ -50,7 +50,7 @@ export default class ParticleEmitter {
     this._raf = null;
   }
 
-  tick = () => {
+  tick(){
     const { width, height } = this.ctx.canvas;
     this.ctx.clearRect(0, 0, width, height);
     this._particles.forEach(particle => {

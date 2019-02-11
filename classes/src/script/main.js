@@ -3,7 +3,8 @@ import Particle from "./lib/Particle.js";
 import Vector3 from "./lib/Vector3";
 
 const pe = new ParticleEmitter(document.querySelector("canvas"), {
-	maxParticles: 1000
+	maxParticles: 1000,
+	spawnPerUpdate: 2
 });
 
 class GreenParticle extends Particle {
