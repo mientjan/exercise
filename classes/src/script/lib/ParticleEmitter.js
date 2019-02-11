@@ -2,8 +2,24 @@ import raf from "@mediamonks/temple/util/raf.js";
 import Particle from "./Particle";
 import isOutOfBounds from "./isOutOfBounds";
 
+/**
+ *
+ */
 export default class ParticleEmitter {
-  constructor(canvas, { maxParticles = 200, spawnPerUpdate = 8 } = {maxParticles: 100, spawnPerUpdate: 2}) {
+  /**
+   *
+   * @param {HTMLCanvasElement} canvas
+   * @param {Object} options
+   * @param {number} options.maxParticles
+   * @param {number} options.spawnPerUpdate
+   */
+  constructor(
+    canvas,
+    { maxParticles = 200, spawnPerUpdate = 8 } = {
+      maxParticles: 100,
+      spawnPerUpdate: 2
+    }
+  ) {
     this.maxParticles = maxParticles;
     this.spawnPerUpdate = spawnPerUpdate;
 
@@ -50,15 +66,13 @@ export default class ParticleEmitter {
     this._raf = null;
   }
 
-  tick(){
+  tick() {
     const { width, height } = this.ctx.canvas;
     this.ctx.clearRect(0, 0, width, height);
     this._particles.forEach(particle => {
       particle.update();
       particle.render(this.ctx);
     });
-
-
 
     for (let i = 0; i < this.spawnPerUpdate; i++) {
       if (this.maxParticles > this._particlesLength) {
@@ -77,5 +91,5 @@ export default class ParticleEmitter {
       return particle.timeToLive > 0 && !isOutOfBounds(particle, width, height);
     });
     this._particlesLength = this._particles.length;
-  };
+  }
 }
