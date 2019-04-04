@@ -3,7 +3,7 @@
  ![](./family-example.png)
 
 recreate this family with code, On every person i need to be able to ask what are you.
-With a function on this person called getTitleRelatedToFamilyStructure()
+With a function on this person called getRelationTitle(person)
 
 __tip:__
  - Use classes
@@ -17,7 +17,7 @@ class Person {
         this.children = [];
     }
 
-    getTitleRelatedToFamilyStructure(){
+    getRelationTitle(person){
       // i need to return my title, example like. parent, grandparent, GreatGrandParent, Child etc.
     }
 }
