@@ -18,7 +18,7 @@ class Person {
     }
 
     getRelationTitle(person){
-      // i need to return my title, example like. parent, grandparent, GreatGrandParent, Child etc.
+      // i need to return my title related to that person, example like. parent, grandparent, GreatGrandParent, Child etc.
     }
 }
 ```
