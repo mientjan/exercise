@@ -5,7 +5,7 @@
   },
 
   "dependencies": {
-    "@mediamonks/richmedia-temple-server": "^1.4.1",
+    "@mediamonks/richmedia-temple-server": "^9.1.1",
     "@mediamonks/temple": "^1.1.10"
   }
 }
